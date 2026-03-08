@@ -1,0 +1,321 @@
+/* Project: Sentilytics - Odyssey Matte UI
+   Palette: #0B0227, #1F027F, #495AEE, #929BEC, #DCE2F4
+*/
+
+:root {
+    --deep-space: #0B0227;
+    --odyssey-blue: #1F027F;
+    --stellar-blue: #495AEE;
+    --haze-blue: #929BEC;
+    --stardust: #DCE2F4;
+
+    /* Texture and Interaction */
+    --line-texture: rgba(0, 0, 0, 0.7);
+    /* Slightly darker for better visibility */
+    --matte-border: rgba(220, 226, 244, 0.15);
+    --light-matte: #DCE2F4;
+    --darker-stardust: #B9C6E1;
+}
+
+/* Custom Themed Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--deep-space);
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, var(--odyssey-blue), var(--stellar-blue));
+    border-radius: 10px;
+    border: 2px solid var(--deep-space);
+}
+
+/* Global Reset & Odyssey Background */
+body {
+    margin: 0;
+    padding: 40px 20px;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    color: var(--stardust);
+    min-height: 100vh;
+    background: linear-gradient(135deg,
+            var(--deep-space) 0%,
+            var(--odyssey-blue) 60%,
+            var(--stellar-blue) 100%);
+    background-attachment: fixed;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+/* --- FIXED CENTERED HEADER --- */
+header {
+    text-align: center;
+    /* Centers inline children */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Centers block children */
+    justify-content: center;
+    margin-bottom: 50px;
+    width: 100%;
+}
+
+header h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin: 0 0 10px 0;
+    letter-spacing: -0.02em;
+    background: linear-gradient(to bottom, #ffffff, var(--haze-blue));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+header p {
+    color: var(--haze-blue);
+    font-size: 1.1rem;
+    margin: 0;
+    text-align: center;
+    /* Ensures the description specifically is centered */
+    max-width: 600px;
+}
+
+/* --- THE TEXTURED MATTE CARD (RESULTS) --- */
+.card {
+    position: relative;
+    background-color: var(--deep-space);
+    /* High-Fidelity Texture: 0.5px lines with 2.5px spacing */
+    background-image: repeating-linear-gradient(45deg,
+            var(--line-texture) 0px,
+            var(--line-texture) 0.5px,
+            transparent 0.5px,
+            transparent 3px);
+    background-blend-mode: multiply;
+
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid var(--matte-border);
+    border-radius: 24px;
+    padding: 30px;
+    margin-bottom: 24px;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6);
+
+    /* Animation Initial State */
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+/* --- LIGHT MATTE CARD (DATA INGESTION) --- */
+
+/* --- TRANSPARENT LIGHT MATTE CARD (INGESTION) --- */
+.card-light {
+    /* Using rgba for transparency: 0.82 is the "sweet spot" for matte depth */
+    background: rgba(220, 226, 244, 0.82);
+
+    /* Increased blur to maintain the matte finish through the transparency */
+    backdrop-filter: blur(3px) saturate(160%);
+    -webkit-backdrop-filter: blur(3px) saturate(160%);
+
+    border: 2px solid rgb(217, 233, 254);
+    border-radius: 30px;
+    padding: 30px;
+    margin-bottom: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--deep-space);
+
+    /* Keeping your Aura Glow */
+    box-shadow: 0 0 30px rgb(220, 226, 244, 0.5);
+}
+
+.card-light h3 {
+    margin-top: 0;
+    color: var(--odyssey-blue);
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 1.3rem;
+    letter-spacing: 0.1em;
+}
+
+/* Animation Reveal Trigger */
+.card.show,
+.card-light.show {
+    animation: slideInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes slideInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Inputs & Component Borders (Stellar Blue: #495AEE) */
+.card-light input[type="file"],
+.card-light textarea {
+    width: 75%;
+    background: rgb(243, 250, 255);
+    border: 2px solid var(--stellar-blue) !important;
+    border-radius: 12px;
+    padding: 18px;
+    color: var(--deep-space);
+    font-family: inherit;
+    font-weight: 600;
+    margin: 15px 0;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+}
+
+/* Container to help center the button if needed */
+.card-light {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* This centers all children, including the button */
+    text-align: center;
+}
+
+/* Updated Button Styling */
+.card-light button#analyzeBtn {
+    position: relative;
+    /* Required for the pseudo-element overlay */
+    z-index: 1;
+    /* Ensures text stays above the gradient layers */
+    overflow: hidden;
+    /* Keeps the gradient within the border radius */
+
+    width: auto;
+    min-width: 240px;
+
+    /* Base Gradient */
+    background: linear-gradient(120deg,
+            var(--deep-space) 0%,
+            var(--odyssey-blue) 60%,
+            var(--stellar-blue) 100%);
+
+    color: rgb(206, 211, 247);
+    border: none;
+    border-radius: 14px;
+    padding: 18px 40px;
+    font-size: 1.1rem;
+    font-weight: 800;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 20px auto 0 auto;
+
+    /* Smooth transition for the transform and shadow */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* The Hover Gradient Layer */
+.card-light button#analyzeBtn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    /* Your Hover Gradient */
+    background: linear-gradient(120deg,
+            var(--stellar-blue) 0%,
+            var(--odyssey-blue) 40%,
+            var(--deep-space) 100%);
+
+    z-index: -1;
+    /* Places it behind the text */
+    opacity: 0;
+    /* Hidden by default */
+    transition: opacity 0.6s ease-in-out;
+    /* This creates the smooth blend */
+}
+
+.card-light button#analyzeBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Reveal the second gradient on hover */
+.card-light button#analyzeBtn:hover::before {
+    opacity: 1;
+}
+
+/* Layout Grid */
+.stats-row {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 24px;
+}
+
+.grid-row {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 24px;
+}
+
+.stat-number {
+    font-size: 4rem;
+    font-weight: 900;
+    color: #ffffff;
+    margin: 10px 0;
+}
+
+.summary-box {
+    font-style: italic;
+    font-size: 1.15rem;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 25px;
+    border-radius: 16px;
+    border-left: 4px solid var(--stellar-blue);
+}
+
+/* Utilities */
+.hidden {
+    display: none;
+}
+
+.divider {
+    text-align: center;
+    margin: 10px 0;
+    font-weight: 900;
+    color: var(--odyssey-blue);
+    opacity: 0.5;
+}
+
+#keywordList li {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 0;
+    border-bottom: 1px solid var(--matte-border);
+}
+
+#keywordList li span {
+    color: var(--haze-blue);
+}
+
+#keywordList li strong {
+    color: var(--stellar-blue);
+}
+
+#particle-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    pointer-events: none;
+}
+
+@media (max-width: 850px) {
+
+    .stats-row,
+    .grid-row {
+        grid-template-columns: 1fr;
+    }
+}

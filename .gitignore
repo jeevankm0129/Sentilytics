@@ -1,0 +1,4 @@
+venv/
+mock data/
+__pycache__/
+*.pyc
